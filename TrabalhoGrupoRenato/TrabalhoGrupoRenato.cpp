@@ -69,8 +69,8 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
             total = ((vecPreco[i]*1.23)*1.30) * quantidade;
             cont = cont + 1;
 
-            cout << "Valor a pagar "<< total;
-            cout << "Valor entregue " << "\n";
+            cout << "Valor a pagar "<< total << "E" <<"\n";
+            cout << "Valor entregue " << "E" << "\n";
             cin >> pagamento;
 
             system("CLS");
@@ -81,11 +81,11 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
             cout << "Numero de linha " << cont << endl;
             cout << "Nome do produto " << vecNomesProduto[i] << endl;
             cout << "Quantidade " << quantidade << endl;
-            cout << "Preço s/IVA " << (vecPreco[i]*1.3) << endl;
-            cout << "IVA " << vecPreco[i]*0.23 << endl;
-            cout << "Total C/iva " << total << endl;
-            cout << "Valor entregue " << pagamento << endl;
-            cout << "Troco " << pagamento- total << endl;
+            cout << "Preço s/IVA " << (vecPreco[i]*1.3) <<"E" << endl;
+            cout << "IVA " << vecPreco[i]*0.23 << "E" << endl;
+            cout << "Total C/iva " << total << "E" << endl;
+            cout << "Valor entregue " << pagamento << "E" << endl;
+            cout << "Troco " << pagamento- total << "E" << endl;
             cout << "----------------------------------------------" << "\n";
             cout << "----------------------------------------------" << "\n";
         }
@@ -113,7 +113,82 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
 
     
 }
+void compraStock(int* vecIdProduto,int* vecQuantidade, string* vecNomesProduto){
+    int produto=0;
+    int qtd = 0;
 
+    system("CLS");
+
+    cout << "ID | " << "Nome | " << "Quantidade | " << endl;
+
+    for (int i = 0; i < 5; i++) {
+
+        cout << vecIdProduto[i] << " | ";
+        cout << vecNomesProduto[i] << "\t" << "|";
+        cout << vecQuantidade[i] << " | "<<"\n";
+        
+    }
+
+    cout << "\n" << "Indique o ID do produto que pretende comprar?" << "\n";
+    cin >> produto;
+
+    for (int i = 0; i < 5; i++) {
+        if (vecIdProduto[i] == produto) {
+        cout << "\n" << "Indique a quantidade de " << vecNomesProduto[i] <<" que pretende comprar ? " << "\n";
+        cin >> qtd;
+        vecQuantidade[i] = vecQuantidade[i] + qtd;
+        }
+    }
+
+    system("CLS");
+}
+void relatorio(int* vecIdProduto,string* vecNomesProduto, int* vecPreco,int* vecQuantidade) {
+    int select = 0;
+    int total = 0;
+    string produto ;
+
+    system("CLS");
+
+    do {
+        cout << "------Prima [1] para Relatório de stock total----------------" << "\n";
+        cout << "-------------------------------------------------------------" << "\n";
+        cout << "------Prima [2] para Relatorio de stock por produto----------" << "\n";
+        cout << "-------------------------------------------------------------" << "\n";
+        cout << "------Prima [3] para voltar atrás----------------------------" << "\n";
+
+        cin >> select;
+
+        system("CLS");
+
+        if (select==1) {
+            for (int i = 0; i < 5; i++) {
+                total = total + vecQuantidade[i];
+            }
+            cout << "O total de stock de produtos no inventário é de: " << total<<"\n";
+            cout << "\n";
+        }
+
+        if (select == 2) {
+            cout << "\n" << "Indique qual nome do produto que pretende ver o stock?" << "\n";
+            cin >> produto;
+
+            system("CLS");
+
+            for (int i = 0; i < 5; i++) {
+                if (vecNomesProduto[i]== produto) {
+                    cout << "ID | " << "Nome | " << "Quantidade | " << endl;
+                    cout << vecIdProduto[i] << " | " << "\t";
+                    cout << vecNomesProduto[i] << "\t" << "|";
+                    cout << vecQuantidade[i] << " | " << "\n";
+                    cout << "\n";
+                }
+            }
+        }
+
+    } while (select != 3);
+
+    system("CLS");
+}
 
 int main()
 {
@@ -147,6 +222,7 @@ int main()
 
     int loginFunc= user(vecIdCliente,vecNomes,login);
 
+
     system("CLS");
 
             do {
@@ -161,15 +237,13 @@ int main()
                     venda(vecIdCliente,vecIdProduto, vecNomesProduto, vecPreco, vecQuantidade, loginFunc, matVenda);
                     break;
                 case 2:
-                    // code block
+                    compraStock(vecIdProduto, vecQuantidade,vecNomesProduto);
                     break;
                 case 3:
-                    // code block
+                    relatorio(vecIdProduto, vecNomesProduto, vecPreco, vecQuantidade);
                     break;
                 }
 
             } while (escolha != 9);
-
-
 
         }
