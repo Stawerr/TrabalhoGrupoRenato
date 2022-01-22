@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
-
+#include <Windows.h>
 using namespace std;
 
 void menu(){
@@ -68,9 +68,9 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
             vecQuantidade[i] = vecQuantidade[i] - quantidade;
             total = ((vecPreco[i]*1.23)*1.30) * quantidade;
             cont = cont + 1;
-
-            cout << "Valor a pagar "<< total << "E" <<"\n";
-            cout << "Valor entregue " << "E" << "\n";
+            SetConsoleOutputCP(1252);
+            cout << "Valor a pagar "<< total << "\u20AC" <<"\n";
+            cout << "Valor entregue " << "\u20AC" << "\n";
             cin >> pagamento;
 
             system("CLS");
@@ -81,11 +81,11 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
             cout << "Numero de linha " << cont << endl;
             cout << "Nome do produto " << vecNomesProduto[i] << endl;
             cout << "Quantidade " << quantidade << endl;
-            cout << "Preço s/IVA " << (vecPreco[i]*1.3) <<"E" << endl;
-            cout << "IVA " << vecPreco[i]*0.23 << "E" << endl;
-            cout << "Total C/iva " << total << "E" << endl;
-            cout << "Valor entregue " << pagamento << "E" << endl;
-            cout << "Troco " << pagamento- total << "E" << endl;
+            cout << "Preço s/IVA " << (vecPreco[i]*1.3) <<"\u20AC" << endl;
+            cout << "IVA " << vecPreco[i]*0.23 << "\u20AC" << endl;
+            cout << "Total C/iva " << total << "\u20AC" << endl;
+            cout << "Valor entregue " << pagamento << "\u20AC" << endl;
+            cout << "Troco " << pagamento- total << "\u20AC" << endl;
             cout << "----------------------------------------------" << "\n";
             cout << "----------------------------------------------" << "\n";
         }
@@ -148,7 +148,7 @@ void relatorio(int* vecIdProduto,string* vecNomesProduto, int* vecPreco,int* vec
     string produto ;
 
     system("CLS");
-
+    
     do {
         cout << "------Prima [1] para Relatório de stock total----------------" << "\n";
         cout << "-------------------------------------------------------------" << "\n";
