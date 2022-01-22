@@ -38,80 +38,95 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
 
     char valid;
     int cont = -1;
-    do {
+    int choose = 0;
 
-    cout << "ID | " << "Nome | " << "Quantidade | " << "Preço | "<<endl;
-    for (int i = 0; i < 5; i++) {
+    cout << "----------------------------------------------" << "\n";
+    cout << "------Prima [1] para Comprar Artigos----------" << "\n";
+    cout << "----------------------------------------------" << "\n";
+    cout << "------Prima [2] para Gerar Relatório de venda-" << "\n";
+    cout << "----------------------------------------------" << "\n";
+    cin >> choose;
+    if (choose==1) {
+        system("CLS");
+        do {
+                cout << "ID | " << "Nome | " << "Quantidade | " << "Preço | "<<endl;
+                for (int i = 0; i < 5; i++) {
         
-            cout << vecIdProduto[i] <<" | ";
-            cout << vecNomesProduto[i]<<"\t" << "|";
-            cout << vecQuantidade[i] << " | ";
-            cout << vecPreco[i] << "\t" << " | "<<endl;
-    }
+                        cout << vecIdProduto[i] <<" | ";
+                        cout << vecNomesProduto[i]<<"\t" << "|";
+                        cout << vecQuantidade[i] << " | ";
+                        cout << vecPreco[i] << "\t" << " | "<<endl;
+                }
     
 
 
-    int id;
-    cout<<"\n" << "Qual o produto que pretende comprar?"<<"\n";
-    cin >> id;
+                int id;
+                cout<<"\n" << "Qual o produto que pretende comprar?"<<"\n";
+                cin >> id;
 
-    int quantidade = 0;
-    int total = 0;
-    int pagamento=0;
+                int quantidade = 0;
+                int total = 0;
+                int pagamento=0;
 
-    for (int i = 0; i < 5; i++) {
-        if (vecIdProduto[i] == id) {
+                for (int i = 0; i < 5; i++) {
+                    if (vecIdProduto[i] == id) {
 
-            cout << "Indique a quantidade a comprar?" << "\n";
-            cin >> quantidade;
+                        cout << "Indique a quantidade a comprar?" << "\n";
+                        cin >> quantidade;
 
-            vecQuantidade[i] = vecQuantidade[i] - quantidade;
-            total = ((vecPreco[i]*1.23)*1.30) * quantidade;
-            cont = cont + 1;
-            SetConsoleOutputCP(1252);
-            cout << "Valor a pagar "<< total << "\u20AC" <<"\n";
-            cout << "Valor entregue " << "\u20AC" << "\n";
-            cin >> pagamento;
+                        vecQuantidade[i] = vecQuantidade[i] - quantidade;
+                        total = ((vecPreco[i]*1.23)*1.30) * quantidade;
+                        cont = cont + 1;
+                        SetConsoleOutputCP(1252);
+                        cout << "Valor a pagar "<< total << "\u20AC" <<"\n";
+                        cout << "Valor entregue " << "\u20AC" << "\n";
+                        cin >> pagamento;
+                        if (pagamento < total) {
+                            do {
 
-            system("CLS");
+                                cout << "O valor a pagar é mais alto do que introduziu, tem de pagar "<< total << "\u20AC" << "\n";
+                                cin >> pagamento;
+                            }
+                             while (pagamento<total);
+                        }
+                        system("CLS");
 
-            cout << "----------------------------------------------" << "\n";
-            cout << "-------------------Talão----------------------" << "\n";
-            cout <<"Número do Cliente " << loginFunc << endl;
-            cout << "Numero de linha " << cont << endl;
-            cout << "Nome do produto " << vecNomesProduto[i] << endl;
-            cout << "Quantidade " << quantidade << endl;
-            cout << "Preço s/IVA " << (vecPreco[i]*1.3) <<"\u20AC" << endl;
-            cout << "IVA " << vecPreco[i]*0.23 << "\u20AC" << endl;
-            cout << "Total C/iva " << total << "\u20AC" << endl;
-            cout << "Valor entregue " << pagamento << "\u20AC" << endl;
-            cout << "Troco " << pagamento- total << "\u20AC" << endl;
-            cout << "----------------------------------------------" << "\n";
-            cout << "----------------------------------------------" << "\n";
-        }
+                        cout << "----------------------------------------------" << "\n";
+                        cout << "-------------------Talão----------------------" << "\n";
+                        cout << "         Número do Cliente " << loginFunc << endl;
+                        cout << "         Numero de linha " << cont << endl;
+                        cout << "         Nome do produto " << vecNomesProduto[i] << endl;
+                        cout << "         Quantidade " << quantidade << endl;
+                        cout << "         Preço s/IVA " << (vecPreco[i]*1.3) <<"\u20AC" << endl;
+                        cout << "         IVA " << vecPreco[i]*0.23 << "\u20AC" << endl;
+                        cout << "         Total C/iva " << total << "\u20AC" << endl;
+                        cout << "         Valor entregue " << pagamento << "\u20AC" << endl;
+                        cout << "         Troco " << pagamento- total << "\u20AC" << endl;
+                        cout << "----------------------------------------------" << "\n";
+                        cout << "----------------------------------------------" << "\n";
+                    }
+                }
+
+                matVenda[cont][0] = loginFunc;
+                matVenda[cont][1] = quantidade;
+                matVenda[cont][2] = total;
+
+                cout << "\n" << "Pretende comprar mais artigos? S/N" << "\n";
+                cin >> valid;
+
+                system("CLS");
+
+            } while (valid != 'N');
     }
-
-    matVenda[cont][0] = loginFunc;
-    matVenda[cont][1] = quantidade;
-    matVenda[cont][2] = total;
-
-    cout << "\n" << "Pretende comprar mais artigos? S/N" << "\n";
-    cin >> valid;
-
-    system("CLS");
-
-    for (int i = 0; i <= cont; i++) {
-        for (int j = 0; j < 3; j++) {
-            cout << matVenda[i][j];
+    if(choose==2) {
+       system("CLS");
+       for (int i = 0; i <= cont; i++) {
+            for (int j = 0; j < 3; j++) {
+                cout << matVenda[i][j];
+            }
+            cout << endl;
         }
-        cout << endl;
-    }
-
-
-    } while (valid != 'N');
-
-
-    
+    }   
 }
 void compraStock(int* vecIdProduto,int* vecQuantidade, string* vecNomesProduto){
     int produto=0;
