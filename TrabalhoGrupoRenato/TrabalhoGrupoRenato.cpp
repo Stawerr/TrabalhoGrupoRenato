@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <Windows.h>
+#include <string>
+#include <sstream>
 using namespace std;
 
 void menu(){
@@ -13,27 +15,36 @@ void menu(){
     cout << "----------------------------------------------" << "\n";
     cout << "------Prima [3] para Relatórios---------------" << "\n";
     cout << "----------------------------------------------" << "\n";
+    cout << "------Prima [4] para novo login---------------" << "\n";
+    cout << "----------------------------------------------" << "\n";
     cout << "------Prima [9] para Sair---------------------" << "\n";
     cout << "----------------------------------------------" << "\n";
 
 }
 int user(int* vecIdCliente,string* vecNomes,int login){
-
+    system("CLS");
     cout << "ID | " << "Nome "  << endl;
     for (int i = 0; i < 4; i++) {
 
         cout << vecIdCliente[i] << "  | ";
         cout << vecNomes[i] << endl;
     }
+        cout << "Por Favor identifique-se pelo seu ID" << endl;
+        cin >> login;
+        if(login < 1 || login >4){
+             do {
+             cout << "Login Inválido, introduza de novo" << endl;
+             cin >> login;
 
-    cout << "Por Favor identifique-se pelo seu ID" << endl;
-    cin >> login;
+            } while (login < 1 || login >4);
+         }
 
+    system("CLS");
     return login;
 
 }
 
-void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vecPreco,int* vecQuantidade,int loginFunc,int** matVenda) {
+void venda(string* vecNomes, int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vecPreco,int* vecQuantidade,int loginFunc,int** matVenda) {
     system("CLS");
 
     char valid;
@@ -46,7 +57,18 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
     cout << "------Prima [2] para Gerar Relatório de venda-" << "\n";
     cout << "----------------------------------------------" << "\n";
     cin >> choose;
-    if (choose==1) {
+
+    if (choose < 1 || choose >2) {
+    
+        do {
+            cout << "Escolha Inválida, introduza de novo" << endl;
+            cin >> choose;
+
+        } while (choose < 1 || choose >2);
+    }
+
+    switch (choose) {
+    case 1:
         system("CLS");
         do {
                 cout << "ID | " << "Nome | " << "Quantidade | " << "Preço | "<<endl;
@@ -57,13 +79,18 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
                         cout << vecQuantidade[i] << " | ";
                         cout << vecPreco[i] << "\t" << " | "<<endl;
                 }
-    
-
 
                 int id;
                 cout<<"\n" << "Qual o produto que pretende comprar?"<<"\n";
                 cin >> id;
+                if (id < 1 || id >5) {
 
+                    do {
+                        cout << "Artigo indisponivel, introduza de novo" << endl;
+                        cin >> id;
+
+                    } while (id < 1 || id >5);
+                }
                 int quantidade = 0;
                 int total = 0;
                 int pagamento=0;
@@ -73,7 +100,14 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
 
                         cout << "Indique a quantidade a comprar?" << "\n";
                         cin >> quantidade;
+                        if (quantidade > vecQuantidade[i] || quantidade<=0) {
+                            do {
+                                cout << "Quantidade inexistente, introduza de novo" << endl;
+                                cout << "Quantidade disponivel "<<vecQuantidade[i] << endl;
+                                cin >> quantidade;
 
+                            } while (quantidade > vecQuantidade[i] || quantidade <= 0);
+                        }
                         vecQuantidade[i] = vecQuantidade[i] - quantidade;
                         total = ((vecPreco[i]*1.23)*1.30) * quantidade;
                         cont = cont + 1;
@@ -94,6 +128,7 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
                         cout << "----------------------------------------------" << "\n";
                         cout << "-------------------Talão----------------------" << "\n";
                         cout << "         Número do Cliente " << loginFunc << endl;
+                        cout << "         Nome do Cliente " << vecNomes[i] << endl;
                         cout << "         Numero de linha " << cont << endl;
                         cout << "         Nome do produto " << vecNomesProduto[i] << endl;
                         cout << "         Quantidade " << quantidade << endl;
@@ -113,19 +148,25 @@ void venda(int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vec
 
                 cout << "\n" << "Pretende comprar mais artigos? S/N" << "\n";
                 cin >> valid;
-
+                if (valid == 'n') {
+                    valid = 'N';
+                }
                 system("CLS");
 
             } while (valid != 'N');
-    }
-    if(choose==2) {
-       system("CLS");
-       for (int i = 0; i <= cont; i++) {
-            for (int j = 0; j < 3; j++) {
-                cout << matVenda[i][j];
-            }
-            cout << endl;
-        }
+
+    case 2:
+           system("CLS");
+           cout << "ID | " << "Quantidade | " << "Total | " << "\t" << endl;
+           for (int i = 0; i <= cont; i++) {
+                for (int j = 0; j < 3; j++) {
+                    cout << matVenda[i][j] << "\t";
+                }
+                cout << endl;
+           }
+           system("PAUSE");
+           system("CLS");
+
     }   
 }
 void compraStock(int* vecIdProduto,int* vecQuantidade, string* vecNomesProduto){
@@ -170,9 +211,16 @@ void relatorio(int* vecIdProduto,string* vecNomesProduto, int* vecPreco,int* vec
         cout << "------Prima [2] para Relatorio de stock por produto----------" << "\n";
         cout << "-------------------------------------------------------------" << "\n";
         cout << "------Prima [3] para voltar atrás----------------------------" << "\n";
-
+        cout << "-------------------------------------------------------------" << "\n";
         cin >> select;
+        if (select < 1 || select >3) {
 
+            do {
+                cout << "Opção indisponivel, introduza de novo" << endl;
+                cin >> select;
+
+            } while (select < 1 || select >3);
+        }
         system("CLS");
 
         if (select==1) {
@@ -186,7 +234,19 @@ void relatorio(int* vecIdProduto,string* vecNomesProduto, int* vecPreco,int* vec
         if (select == 2) {
             cout << "\n" << "Indique qual nome do produto que pretende ver o stock?" << "\n";
             cin >> produto;
-
+            for (int i = 0; i < 5; i++) {
+                if (produto.compare(vecNomesProduto[i])<0) {
+                            cout << "ID | " << "Nome | " << "Quantidade | " << endl;
+                            cout << vecIdProduto[i] << " | " << "\t";
+                            cout << vecNomesProduto[i] << "\t" << "|";
+                            cout << vecQuantidade[i] << " | " << "\n";
+                            cout << "\n";
+                }
+                else {
+                    cout << "Produto inexistente escolha de novo"<<"\n";
+                    cin >> produto;
+                }
+            }
             system("CLS");
 
             for (int i = 0; i < 5; i++) {
@@ -241,7 +301,7 @@ int main()
     system("CLS");
 
             do {
-
+                
                 menu();
                 
                 cout << "\n" << "Indique a operação a realizar?" << endl;
@@ -249,7 +309,7 @@ int main()
 
                 switch (escolha) {
                 case 1:
-                    venda(vecIdCliente,vecIdProduto, vecNomesProduto, vecPreco, vecQuantidade, loginFunc, matVenda);
+                    venda(vecNomes,vecIdCliente,vecIdProduto, vecNomesProduto, vecPreco, vecQuantidade, loginFunc, matVenda);
                     break;
                 case 2:
                     compraStock(vecIdProduto, vecQuantidade,vecNomesProduto);
@@ -257,8 +317,11 @@ int main()
                 case 3:
                     relatorio(vecIdProduto, vecNomesProduto, vecPreco, vecQuantidade);
                     break;
+                case 4:
+                    user(vecIdCliente, vecNomes, login);
+                    break;
                 }
-
+                
             } while (escolha != 9);
 
         }
