@@ -171,7 +171,7 @@ void venda(string* vecNomes, int* vecIdCliente,int* vecIdProduto, string* vecNom
                 system("CLS");
 
             } while (valid != 'N');   
-
+            break;
     case 2:
         
            system("CLS");
