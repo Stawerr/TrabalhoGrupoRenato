@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <Windows.h>
 #include <string>
-#include <algorithm>
-#include <iterator>
-#include <sstream>
 
 using namespace std;
 
@@ -24,7 +21,6 @@ void menu(){
     cout << "----------------------------------------------" << "\n";
     cout << "------Prima [9] para Sair---------------------" << "\n";
     cout << "----------------------------------------------" << "\n";
-
 }
 
 /* Função selecção de cliente */
@@ -52,16 +48,14 @@ int user(int* vecIdCliente,string* vecNomes,int login){
 
     system("CLS");
     return login;
-
 }
 
 /* Função de venda */
 
-void venda(string* vecNomes, int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vecPreco,int* vecQuantidade,int loginFunc,int** matVenda) {
+void venda(string* vecNomes, int* vecIdCliente,int* vecIdProduto, string* vecNomesProduto,int* vecPreco,int* vecQuantidade,int loginFunc,int** matVenda,int* cont) {
     system("CLS");
 
     char valid;
-    int cont = -1;
     int choose = 0;
 
     cout << "----------------------------------------------" << "\n";
@@ -128,7 +122,7 @@ void venda(string* vecNomes, int* vecIdCliente,int* vecIdProduto, string* vecNom
                         }
                         vecQuantidade[i] = vecQuantidade[i] - quantidade;
                         total = ((vecPreco[i]*1.23)*1.30) * quantidade;
-                        cont = cont + 1;
+                        *cont = *cont + 1;
                         SetConsoleOutputCP(1252);
                         cout << "Valor a pagar "<< total << "\u20AC" <<"\n";
                         cout << "Valor entregue " << "\u20AC" << "\n";
@@ -152,7 +146,7 @@ void venda(string* vecNomes, int* vecIdCliente,int* vecIdProduto, string* vecNom
                         cout << "-------------------Talão----------------------" << "\n";
                         cout << "         Número do Cliente " << loginFunc << endl;
                         cout << "         Nome do Cliente " << vecNomes[i] << endl;
-                        cout << "         Numero de linha " << cont << endl;
+                        cout << "         Numero de linha " << *cont << endl;
                         cout << "         Nome do produto " << vecNomesProduto[i] << endl;
                         cout << "         Quantidade " << quantidade << endl;
                         cout << "         Preço s/IVA " << (vecPreco[i]*1.3) <<"\u20AC" << endl;
@@ -165,9 +159,9 @@ void venda(string* vecNomes, int* vecIdCliente,int* vecIdProduto, string* vecNom
                     }
                 }
 
-                matVenda[cont][0] = loginFunc;
-                matVenda[cont][1] = quantidade;
-                matVenda[cont][2] = total;
+                matVenda[*cont][0] = loginFunc;
+                matVenda[*cont][1] = quantidade;
+                matVenda[*cont][2] = total;
 
                 cout << "\n" << "Pretende comprar mais artigos? S/N" << "\n";
                 cin >> valid;
@@ -176,14 +170,13 @@ void venda(string* vecNomes, int* vecIdCliente,int* vecIdProduto, string* vecNom
                 }
                 system("CLS");
 
-            } while (valid != 'N');
-
-/* se colocarmos break nos case o progrma sai fora, se não colocar-mos ele executa os dois cases????*/
+            } while (valid != 'N');   
 
     case 2:
+        
            system("CLS");
            cout << "ID | " << "Quantidade | " << "Total | " << "\t" << endl;
-           for (int i = 0; i <= cont; i++) {
+           for (int i = 0; i <= *cont; i++) {
                 for (int j = 0; j < 3; j++) {
                     cout << matVenda[i][j] << "\t";
                 }
@@ -232,7 +225,7 @@ void compraStock(int* vecIdProduto,int* vecQuantidade, string* vecNomesProduto){
 void relatorio(int* vecIdProduto,string* vecNomesProduto, int* vecPreco,int* vecQuantidade) {
     int select = 0;
     int total = 0;
-    string produto ;
+    int produto ;
 
     system("CLS");
     
@@ -247,7 +240,6 @@ void relatorio(int* vecIdProduto,string* vecNomesProduto, int* vecPreco,int* vec
 
         /* Validação de introdução correcta */
 
-        
         if (select < 1 || select >3) {
 
             do {
@@ -269,18 +261,30 @@ void relatorio(int* vecIdProduto,string* vecNomesProduto, int* vecPreco,int* vec
         }
 
         /* Indicação do stock por produto */
-
+        int sair=0;
         if (select == 2) {
-            cout << "\n" << "Indique qual nome do produto que pretende ver o stock?" << "\n";
-            cin >> produto;
-            find(vecNomesProduto, vecNomesProduto + 5, produto);
-            if (produto != vecNomesProduto + 5) {
-                cout << " encontrou";
-            }
-            else {
-                cout << "merda";
-            }
 
+            cout << "ID | " << "Nome | " << endl;
+            for (int i = 0; i < 5; i++) {
+                cout << vecIdProduto[i] << " | ";
+                cout << vecNomesProduto[i] << "\t" << "|"<<"\n";
+            }
+            cout << "\n" << "Indique qual o Id do produto que pretende ver o stock?" << "\n";
+            cin >> produto;
+            cout << "\n";
+            for (int i = 0; i < 5; i++) {
+                
+                if (produto == vecIdProduto[i]){
+                    cout << "ID | " << "Nome | " << endl;
+                    cout << vecIdProduto[i] << " | ";
+                    cout << vecNomesProduto[i] << "\t" << "|";
+                    cout << vecQuantidade[i] << " | ";
+                }
+            }
+            cout << "\n";
+            system("pause");
+            system("CLS");
+         
             /*for (int i = 0; i < 5; i++) {
                 if (produto.compare(vecNomesProduto[i])!=0) {
                             cout << "ID | " << "Nome | " << "Quantidade | " << endl;
@@ -292,17 +296,6 @@ void relatorio(int* vecIdProduto,string* vecNomesProduto, int* vecPreco,int* vec
                 else {
                     cout << "Produto inexistente escolha de novo"<<"\n";
                     cin >> produto;
-                }
-            }*/
-            system("CLS");
-
-            /*for (int i = 0; i < 5; i++) {
-                if (vecNomesProduto[i]== produto) {
-                    cout << "ID | " << "Nome | " << "Quantidade | " << endl;
-                    cout << vecIdProduto[i] << " | " << "\t";
-                    cout << vecNomesProduto[i] << "\t" << "|";
-                    cout << vecQuantidade[i] << " | " << "\n";
-                    cout << "\n";
                 }
             }*/
         }
@@ -321,20 +314,18 @@ int main()
 
     int vecIdCliente[] = { 1,2,3,4 };
     string vecNomes[] = { "Ana","Joel","Paulo","Maria" };
-
-        
+   
     /* Vetores Produto */
  
     int vecIdProduto[] = { 1,2,3,4,5 };
     string vecNomesProduto[] = { "Monitor","Teclado","Rato","Webcam","Colunas" };
     int vecPreco[] = { 120,22,13,40,25 };
     int vecQuantidade[] = { 10,10,10,10,10 };
-
-        
+  
     /* Matriz Venda */
 
     int login=0;
-
+    int cont = -1;
 
     int** matVenda = new int* [10];
     for (int i = 0; i < 10; i++) {
@@ -342,7 +333,6 @@ int main()
     }
 
     int loginFunc= user(vecIdCliente,vecNomes,login);
-
 
     system("CLS");
 
@@ -355,7 +345,7 @@ int main()
 
                 switch (escolha) {
                 case 1:
-                    venda(vecNomes,vecIdCliente,vecIdProduto, vecNomesProduto, vecPreco, vecQuantidade, loginFunc, matVenda);
+                    venda(vecNomes,vecIdCliente,vecIdProduto, vecNomesProduto, vecPreco, vecQuantidade, loginFunc, matVenda, &cont);
                     break;
                 case 2:
                     compraStock(vecIdProduto, vecQuantidade,vecNomesProduto);
@@ -369,5 +359,4 @@ int main()
                 }
                 
             } while (escolha != 9);
-
         }
